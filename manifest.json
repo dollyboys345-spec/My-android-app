@@ -1,0 +1,13 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Shadan Repair",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Shadan Repair",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "id": "shadan-repair",
+  "description": "Shadan Repair - Your repair service app"
+}
