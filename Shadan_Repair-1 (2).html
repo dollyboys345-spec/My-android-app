@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Shadan Repair - Home Repair Service</title>
+<style>
+:root{--primary:#0b63f6;--dark:#0f172a;--muted:#64748b;--bg:#f5f7fb;--card:#fff;--border:#e5e7eb;--green:#16a34a;--danger:#dc2626}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--dark)}
+button,input,textarea,select{font:inherit}button{cursor:pointer;border:0}
+.app{width:min(480px,100%);margin:auto;min-height:100vh;background:var(--bg);padding-bottom:75px}
+.page{display:none}.page.active{display:block}
+header{background:#fff;padding:16px;border-bottom:1px solid var(--border)}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:21px;font-weight:800}.location{font-size:12px;color:var(--muted);margin-top:4px}
+.iconbtn{background:#eef4ff;padding:10px 13px;border-radius:12px}
+.search{margin-top:14px;background:#f1f5f9;padding:13px;border-radius:12px;color:var(--muted)}
+.hero{margin:16px;padding:22px;border-radius:18px;background:linear-gradient(135deg,#0b63f6,#2563eb);color:#fff}
+.hero h1{margin:0 0 8px;font-size:25px}.hero p{margin:0;font-size:14px;line-height:1.5}
+.section{padding:0 16px;margin-top:18px}.section-title{display:flex;justify-content:space-between;align-items:center}.section-title h2{font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;text-align:left;box-shadow:0 3px 10px rgba(0,0,0,.04)}
+.service-icon{font-size:35px;margin-bottom:10px}.card h3{margin:5px 0;font-size:16px}.card p{font-size:13px;color:var(--muted);margin:5px 0}
+.price{font-size:18px;font-weight:800;margin-top:10px}
+.page{padding:16px}.page-head{margin-bottom:18px}.page-head h2{margin:15px 0 5px}.page-head p{color:var(--muted);font-size:13px}
+.back{background:#fff;border:1px solid var(--border);padding:10px 14px;border-radius:10px}
+.list{display:flex;flex-direction:column;gap:10px}
+.option{width:100%;background:#fff;border:1px solid var(--border);border-radius:15px;padding:14px;display:flex;align-items:center;gap:12px;text-align:left}
+.emoji{font-size:25px}.info{flex:1}.info b{display:block;margin-bottom:4px}.info small{color:var(--muted);font-size:12px}.amount{font-weight:800}
+.form{background:#fff;padding:16px;border-radius:16px;margin-top:15px}.form label{display:block;font-weight:700;font-size:13px;margin:12px 0 6px}
+.form input,.form textarea,.form select{width:100%;padding:13px;border:1px solid var(--border);border-radius:10px;outline:none}.form textarea{min-height:90px;resize:vertical}
+.btn{width:100%;background:var(--primary);color:#fff;padding:14px;border-radius:11px;font-weight:700;margin-top:15px}.btn.green{background:var(--green)}.btn.red{background:var(--danger)}
+.summary{background:#fff;padding:16px;border-radius:16px}.row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #f1f5f9}.row:last-child{border-bottom:0}.total{font-size:17px;font-weight:800}
+.success{text-align:center;padding:45px 25px}.success .tick{font-size:70px}
+.badge{display:inline-block;background:#dcfce7;color:#15803d;padding:6px 10px;border-radius:20px;font-size:12px;font-weight:700}
+.track{background:#fff;margin:16px;padding:18px;border-radius:16px}.step{display:flex;gap:13px;margin:18px 0}
+.dot{width:28px;height:28px;border-radius:50%;background:#dbeafe;color:#0755d9;display:grid;place-items:center;font-weight:800}
+.muted{color:var(--muted);font-size:13px}.empty{text-align:center;padding:45px 20px;color:var(--muted)}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);background:#fff;border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:10px 6px;z-index:30}
+.bottom button{background:none;color:var(--muted);font-size:11px}.bottom span{display:block;font-size:20px;margin-bottom:3px}
+</style>
+</head>
+<body>
+<div class="app">
+<div id="home" class="page active">
+<header><div class="top"><div><div class="logo">🔧 Shadan Repair</div><div class="location">📍 Service at your doorstep</div></div><button class="iconbtn" onclick="showPage('orders')">📋</button></div><div class="search">🔍 Search repair service...</div></header>
+<div class="hero"><h1>Repair. We Come To You.</h1><p>Choose your device, select the exact repair and book a technician for your home.</p></div>
+<div class="section"><div class="section-title"><h2>Repair Services</h2></div><div class="grid" id="services"></div></div>
+<div class="section"><div class="section-title"><h2>How it works</h2></div><div class="card"><p>1️⃣ Select device → 2️⃣ Select problem → 3️⃣ Choose part → 4️⃣ Book → 5️⃣ Technician visits your home</p></div></div>
+</div>
+<div id="brands" class="page"><div class="page-head"><button class="back" onclick="showPage('home')">← Back</button><h2 id="brandTitle">Choose Brand</h2><p>Select your device brand.</p></div><div class="list" id="brandsList"></div></div>
+<div id="problems" class="page"><div class="page-head"><button class="back" onclick="showPage('brands')">← Back</button><h2 id="problemTitle">Select Repair</h2><p>Choose what needs to be repaired.</p></div><div class="list" id="problemsList"></div></div>
+<div id="parts" class="page"><div class="page-head"><button class="back" onclick="showPage('problems')">← Back</button><h2 id="partTitle">Choose Part / Service</h2><p>Select the option you want. The price is shown before booking.</p></div><div class="list" id="partsList"></div></div>
+<div id="book" class="page"><div class="page-head"><button class="back" onclick="showPage('parts')">← Back</button><h2>Book Home Repair</h2><p>Technician will visit your address.</p></div><div class="summary" id="bookingSummary"></div><div class="form">
+<label>Your Name</label><input id="name" placeholder="Enter your name">
+<label>Mobile Number</label><input id="mobile" type="tel" maxlength="10" placeholder="10-digit mobile number">
+<label>Address</label><textarea id="address" placeholder="House no., street, area"></textarea>
+<label>City</label><input id="city" placeholder="Your city">
+<label>Preferred Date</label><input id="date" type="date">
+<label>Preferred Time</label><select id="time"><option>9 AM - 12 PM</option><option>12 PM - 3 PM</option><option>3 PM - 6 PM</option><option>6 PM - 9 PM</option></select>
+<label>Payment</label><select id="payment"><option>Cash / UPI after service</option><option>UPI Online</option></select>
+<button class="btn" onclick="confirmBooking()">Confirm Booking</button>
+</div></div>
+<div id="success" class="page"><div class="success"><div class="tick">✅</div><h2>Booking Confirmed</h2><p class="muted">Your repair request has been booked.</p><div class="summary" id="successSummary"></div><button class="btn" onclick="showPage('orders')">View Booking</button></div></div>
+<div id="orders" class="page"><div class="page-head"><button class="back" onclick="showPage('home')">← Home</button><h2>My Bookings</h2><p>Your repair bookings.</p></div><div id="ordersList"></div></div>
+<div id="track" class="page"><div class="page-head"><button class="back" onclick="showPage('orders')">← Bookings</button><h2>Track Technician</h2></div><div class="track">
+<div class="step"><div class="dot">1</div><div><b>Booking Confirmed</b><div class="muted">Your request has been received.</div></div></div>
+<div class="step"><div class="dot">2</div><div><b>Partner Assigned</b><div class="muted">Nearby repair partner will accept the request.</div></div></div>
+<div class="step"><div class="dot">3</div><div><b>Technician On The Way</b><div class="muted">Technician will visit your address.</div></div></div>
+<div class="step"><div class="dot">4</div><div><b>Repair Completed</b><div class="muted">Pay after successful repair.</div></div></div>
+</div></div>
+<div id="profile" class="page"><div class="page-head"><button class="back" onclick="showPage('home')">← Home</button><h2>Profile</h2><p>Manage your account.</p></div><div class="form">
+<label>Name</label><input placeholder="Your name"><label>Mobile</label><input placeholder="Mobile number"><label>Default Address</label><textarea placeholder="Your address"></textarea><button class="btn">Save Profile</button>
+</div></div>
+<nav class="bottom"><button onclick="showPage('home')"><span>🏠</span>Home</button><button onclick="showPage('orders')"><span>📋</span>Bookings</button><button onclick="showPage('track')"><span>📍</span>Track</button><button onclick="showPage('profile')"><span>👤</span>Profile</button></nav>
+</div>
+<script>
+const data={
+Mobile:{icon:"📱",brands:["Apple","Samsung","OnePlus","Xiaomi","Vivo","Oppo","Realme","Motorola"],problems:{
+"Screen / Glass Replacement":[["Original Glass Replacement","Original-quality glass replacement","₹1,499"],["Premium Glass Replacement","Premium quality replacement","₹999"],["Budget Glass Replacement","Affordable replacement","₹699"]],
+"Display Replacement":[["Original Display","Original display assembly","₹5,999"],["Compatible Display","Good quality compatible display","₹3,499"],["Budget Display","Economy display option","₹2,499"]],
+"Battery Replacement":[["Original Battery","Battery replacement","₹1,999"],["Compatible Battery","Compatible battery","₹1,299"]],
+"Charging Port":[["Charging Port Repair","Repair / replacement","₹799"]],
+"Speaker / Mic":[["Speaker Repair","Speaker replacement","₹699"],["Mic Repair","Microphone repair","₹599"]]}},
+Laptop:{icon:"💻",brands:["HP","Dell","Lenovo","Asus","Acer","Apple"],problems:{
+"Screen Replacement":[["Original Screen","Original-quality screen","₹7,999"],["Compatible Screen","Compatible screen","₹4,999"]],
+"Keyboard Replacement":[["Original Keyboard","Full keyboard replacement","₹2,499"],["Compatible Keyboard","Compatible keyboard","₹1,499"]],
+"Battery Replacement":[["Original Battery","Laptop battery replacement","₹3,999"],["Compatible Battery","Compatible battery","₹2,499"]],
+"Charging Repair":[["Charging Port Repair","DC jack / charging port","₹1,299"]]}},
+TV:{icon:"📺",brands:["Samsung","LG","Sony","TCL","Mi","Other"],problems:{
+"Display Repair":[["Panel Inspection","Technician inspection","Inspection Required"],["Display Replacement","Panel replacement","Quote After Inspection"]],
+"Power Problem":[["Power Board Repair","Repair/replacement","₹1,499"],["Power Board Replacement","Board replacement","₹2,999"]],
+"Sound Problem":[["Speaker Repair","Speaker replacement","₹999"]]}},
+Refrigerator:{icon:"🧊",brands:["LG","Samsung","Whirlpool","Godrej","Haier","Other"],problems:{
+"Cooling Problem":[["Cooling Diagnosis","Technician diagnosis","₹299"],["Gas Charging","Gas service","₹1,499"]],
+"Compressor":[["Compressor Inspection","Inspection","Inspection Required"]],
+"Door / Seal":[["Door Gasket Replacement","Seal replacement","₹799"]]}},
+Washing_Machine:{icon:"🧺",brands:["LG","Samsung","Whirlpool","IFB","Godrej","Other"],problems:{
+"Drainage Problem":[["Drain Pump Repair","Repair/replacement","₹999"]],
+"Motor Problem":[["Motor Inspection","Technician inspection","Inspection Required"]],
+"Door Problem":[["Door / Lock Repair","Repair/replacement","₹799"]]}},
+Printer:{icon:"🖨️",brands:["HP","Canon","Epson","Brother","Other"],problems:{
+"Paper Feed":[["Paper Feed Repair","Roller / feed repair","₹699"]],
+"Print Quality":[["Cleaning Service","Head cleaning/service","₹499"]],
+"Ink System":[["Ink System Repair","Inspection and repair","₹799"]]}},
+Speaker:{icon:"🔊",brands:["JBL","Boat","Sony","Zebronics","Other"],problems:{
+"Battery":[["Battery Replacement","Battery replacement","₹799"]],
+"Speaker":[["Speaker Replacement","Speaker unit replacement","₹999"]],
+"Charging Port":[["Charging Port Repair","Port repair","₹599"]]}},
+Gaming_Console:{icon:"🎮",brands:["PlayStation","Xbox","Nintendo","Other"],problems:{
+"HDMI Port":[["HDMI Port Repair","Port repair/replacement","₹1,499"]],
+"Controller":[["Controller Repair","Button / stick repair","₹799"]],
+"Overheating":[["Cleaning & Thermal Service","Deep cleaning + thermal service","₹999"]]}},
+Inverter_UPS:{icon:"🔋",brands:["Luminous","Microtek","Exide","Other"],problems:{
+"Battery":[["Battery Inspection","Battery testing","₹199"],["Battery Replacement","Battery replacement","Quote After Inspection"]],
+"Charging Problem":[["Charging Repair","Charging circuit repair","₹999"]]}}
+};
+let selected={};
+let orders=JSON.parse(localStorage.getItem("shadanOrders")||"[]");
+
+function showPage(id){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+const page=document.getElementById(id);if(page)page.classList.add("active");
+window.scrollTo(0,0);if(id==="orders")renderOrders();
+}
+function renderServices(){
+const box=document.getElementById("services");box.innerHTML="";
+Object.entries(data).forEach(([key,d])=>{
+const label=key.replaceAll("_"," ");
+box.innerHTML+=`<button class="card" onclick="chooseDevice('${key}')"><div class="service-icon">${d.icon}</div><h3>${label}</h3><p>Book doorstep repair</p></button>`;
+});
+}
+function chooseDevice(device){
+selected={device};
+document.getElementById("brandTitle").textContent=data[device].icon+" "+device.replaceAll("_"," ");
+document.getElementById("brandsList").innerHTML=data[device].brands.map(b=>`<button class="option" onclick="chooseBrand('${b}')"><div class="emoji">${data[device].icon}</div><div class="info"><b>${b}</b><small>Select your ${device.replaceAll("_"," ")} brand</small></div><div>›</div></button>`).join("");
+showPage("brands");
+}
+function chooseBrand(brand){
+selected.brand=brand;
+document.getElementById("problemTitle").textContent=brand+" — Select Repair";
+document.getElementById("problemsList").innerHTML=Object.entries(data[selected.device].problems).map(([p,items])=>`<button class="option" onclick="chooseProblem('${p.replaceAll("'","\\'")}')"><div class="emoji">🛠️</div><div class="info"><b>${p}</b><small>${items.length} service option${items.length>1?"s":""}</small></div><div>›</div></button>`).join("");
+showPage("problems");
+}
+function chooseProblem(problem){
+selected.problem=problem;const items=data[selected.device].problems[problem];
+document.getElementById("partTitle").textContent=problem;
+document.getElementById("partsList").innerHTML=items.map((x,i)=>`<button class="option" onclick="choosePart(${i})"><div class="emoji">🔧</div><div class="info"><b>${x[0]}</b><small>${x[1]}</small></div><div class="amount">${x[2]}</div></button>`).join("");
+showPage("parts");
+}
+function choosePart(i){
+const item=data[selected.device].problems[selected.problem][i];
+selected.part=item[0];selected.description=item[1];selected.price=item[2];
+document.getElementById("bookingSummary").innerHTML=`<div class="row"><span>Device</span><b>${data[selected.device].icon} ${selected.device.replaceAll("_"," ")}</b></div><div class="row"><span>Brand</span><b>${selected.brand}</b></div><div class="row"><span>Repair</span><b>${selected.problem}</b></div><div class="row"><span>Selected service</span><b>${selected.part}</b></div><div class="row total"><span>Service price</span><span>${selected.price}</span></div>`;
+showPage("book");
+}
+function confirmBooking(){
+const name=document.getElementById("name").value.trim(),mobile=document.getElementById("mobile").value.trim(),address=document.getElementById("address").value.trim(),city=document.getElementById("city").value.trim(),date=document.getElementById("date").value,time=document.getElementById("time").value,payment=document.getElementById("payment").value;
+if(!name||!mobile||!address||!city||!date){alert("Please fill all required details.");return}
+if(!/^\d{10}$/.test(mobile)){alert("Please enter a valid 10-digit mobile number.");return}
+const order={...selected,name,mobile,address,city,date,time,payment,id:"SR"+Date.now()};
+orders.unshift(order);localStorage.setItem("shadanOrders",JSON.stringify(orders));
+document.getElementById("successSummary").innerHTML=`<div class="row"><span>Booking ID</span><b>${order.id}</b></div><div class="row"><span>Service</span><b>${order.part}</b></div><div class="row"><span>Price</span><b>${order.price}</b></div><div class="row"><span>Date</span><b>${date}</b></div><div class="row"><span>Time</span><b>${time}</b></div><div class="row"><span>Visit</span><b>At your doorstep</b></div>`;
+showPage("success");
+}
+function renderOrders(){
+const box=document.getElementById("ordersList");
+if(!orders.length){box.innerHTML=`<div class="empty">📋<br><br>No bookings yet.<br>Select a repair service to book.</div>`;return}
+box.innerHTML=orders.map(o=>`<div class="card"><span class="badge">CONFIRMED</span><h3 style="margin-top:10px">${o.part}</h3><p>${o.brand} ${o.device.replaceAll("_"," ")} • ${o.problem}</p><div class="price">${o.price}</div><p style="margin-top:8px">📅 ${o.date} • ${o.time}</p><button class="btn" onclick="showPage('track')">Track Technician</button></div>`).join("");
+}
+renderServices();
+</script>
+</body>
+</html>
